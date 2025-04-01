@@ -1,0 +1,11 @@
+pytest
+httpx
+
+fastapi
+uvicorn
+
+sqlalchemy
+PyMySQL
+
+redis
+meilisearch
