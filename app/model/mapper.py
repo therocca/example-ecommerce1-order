@@ -75,3 +75,31 @@ def orders_to_dto(orders: list[Order]) -> list[OrderDto]:
             )
         output.append(order)
     return output
+
+
+def order_to_dto(order: Order) -> OrderDto:
+    """
+    Methods for converting an order DAO to corresponding DTO
+    """
+
+    items = []
+    for i in order.items:
+        item = OrderItemDto(
+            order_id=i.order_id, 
+            product_id=i.product_id, 
+            product_name=i.product_name,
+            product_description=i.product_description,
+            product_price=i.product_price,
+            quantity=i.quantity
+        )
+        items.append(item)
+    output = OrderDto(
+                id=order.id,
+                created_at=order.created_at,
+                closed_at=order.closed_at,
+                customer_email=order.customer_email,
+                total_price=order.total_price,
+                state=order.state,
+                items=items
+            )
+    return output

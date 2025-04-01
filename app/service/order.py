@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.model.dto import CreateOrderReqDto, CreateOrderRespDto, OrderDto
-from app.model.mapper import orders_to_dto
+from app.model.mapper import order_to_dto, orders_to_dto
 import app.repository.order as order_repo
 from app.search import index_order, remove_index_order, search_orders
 # from app.cache import redis_client
@@ -30,11 +30,10 @@ class OrderService:
     
     def get(self, order_id: int) -> OrderDto:
         order = order_repo.get_order(self.db, _id=order_id)
-        raise NotImplementedError
-        # response = order_to_dto(orders)                                           # TODO: implement DTO conversion method
+        response = order_to_dto(order)
         # key = f"order:{order_id}"                                                 # TODO: redis read
         # order_json = redis_client.get(key)  # Fetch order from Redis
-        # return response
+        return response
 
     def get_all(self, query: str = None) -> list[OrderDto]:                         # TODO: add possibility also for read filtered from DB (e.g. + query params to filter on field state in DB query)
         if query:

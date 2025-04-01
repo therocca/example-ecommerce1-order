@@ -9,7 +9,9 @@ from app.service.order import OrderService
 app = FastAPI()
 
 
-# @app.post("/product/", response_model=int)                                # TODO: example of method with to-be error handling, check comment in exception file
+# TODO: add missing error handling logics, and mapping to some HTTP code and responses
+
+# @app.post("/product/", response_model=int)                                # TODO: example of method with to-be error handling, which also defines some domain exceptions
 # async def create_product(product: ProductDto,                             #       ideally make this logic a decorator for each API method
 #                          product_srv: ProductService = Depends()):
 #     try:
@@ -32,7 +34,14 @@ async def create_order(order: CreateOrderReqDto,
     return response
 
 
-@app.get("/order/", response_model=list[OrderDto])
+@app.get("/order/{order_id}", response_model=OrderDto)
+async def get_order(order_id: int,
+                     order_srv: OrderService = Depends()):
+    response = order_srv.get(order_id)
+    return response
+
+
+@app.get("/orders/", response_model=list[OrderDto])
 async def get_orders(search_query: str = None, 
                      order_srv: OrderService = Depends()):
     response = order_srv.get_all(query=search_query)
